@@ -1,13 +1,17 @@
-﻿<Window x:Class="FileLooks.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FileLooks"
+        xmlns:ViewModel="clr-namespace:FileLooks.ViewModel"
+        x:Class="FileLooks.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="450"
         Width="800">
+    <Window.DataContext>
+        <ViewModel:MainWindowViewModel />
+    </Window.DataContext>
     <Grid Margin="10">
 
         <Grid.RowDefinitions>
@@ -15,7 +19,8 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0"
+              Cursor="">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
@@ -23,14 +28,25 @@
 
             <TextBox Margin="0,0,10,0"
                      Grid.Column="0"
+                     Text="{Binding SelectPath}"
                      Style="{StaticResource DefaultTextBoxStyle}"
-                     VerticalContentAlignment="Center" />
+                     VerticalContentAlignment="Center"
+                     Cursor="" />
 
             <Button Grid.Column="1"
+                    Command="{Binding Cmd_SelectPath}"
                     Style="{StaticResource DefaultButtonStyle}"
-                    Content="选择目录" />
+                    Content="Select Origin Folder" />
 
         </Grid>
+
+        <TreeView Grid.Row="1" ItemsSource="{Binding Folders}">
+            <TreeView.ItemTemplate>
+                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                    <TextBlock Text="{Binding Name}" />
+                </HierarchicalDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
 
     </Grid>
 </Window>
