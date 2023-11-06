@@ -45,7 +45,12 @@
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding SubFolders}">
 
-                    <Grid VerticalAlignment="Center">
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <Image Source="../Icons/folder.png" Width="15" Height="15" Margin="0,0,5,0"/>
+                        <TextBlock  Text="{Binding Name}" Margin="5" />
+                    </StackPanel>
+                    
+                    <!--<Grid VerticalAlignment="Center">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition/>
@@ -68,10 +73,7 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        
-
-
-                    </Grid>
+                    </Grid>-->
 
                     <!--<TextBlock Text="{Binding Name}" />-->
                 </HierarchicalDataTemplate>

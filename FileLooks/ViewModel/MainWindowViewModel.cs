@@ -68,18 +68,23 @@ namespace FileLooks.ViewModel
         }
 
 
-        public void LoadDirectories(string path, Folder parent)
+        public async void LoadDirectories(string path, Folder parent)
         {
 
             string[] dirs = Directory.GetDirectories(path);
             foreach (string dir in dirs)
             {
+
                 Folder folder = new Folder();
                 folder.Path = dir;
                 folder.Name = Path.GetFileName(dir);
                 folder.SubFolders = new ObservableCollection<Folder> { };
                 folder.SubFiles = new ObservableCollection<FileItem> { };
-                LoadDirectories(dir, folder);
+                await Task.Run(() =>
+                {
+                    LoadDirectories(dir, folder);
+
+                });
 
 
                 string[] files = Directory.GetFiles(path);
@@ -94,7 +99,7 @@ namespace FileLooks.ViewModel
                 parent.SubFolders.Add(folder);
             }
 
-            
+
 
         }
 
