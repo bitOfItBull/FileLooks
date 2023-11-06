@@ -77,7 +77,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Common\CommandBase.cs" />
+    <Compile Include="Common\EventCommands.cs" />
+    <Compile Include="Common\FileUtil.cs" />
     <Compile Include="Common\NotifyBase.cs" />
+    <Compile Include="Converter\True2Visible.cs" />
+    <Compile Include="Converter\UriToBitmapConverter.cs" />
     <Compile Include="Model\FileItem.cs" />
     <Compile Include="Model\Folder.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
@@ -104,6 +108,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Font\iconfont.ttf" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -115,5 +120,6 @@
   <ItemGroup>
     <Resource Include="Icons\folder.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

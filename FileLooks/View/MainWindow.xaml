@@ -4,12 +4,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FileLooks"
         xmlns:ViewModel="clr-namespace:FileLooks.ViewModel"
+        xmlns:commom="clr-namespace:CommonLib.Common"
+        xmlns:converter="clr-namespace:FileLooks.Converter"
         x:Class="FileLooks.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow"
         WindowStartupLocation="CenterScreen"
         Height="600"
         Width="800">
+    <Window.Resources>
+        <ResourceDictionary>
+            <converter:True2Visible x:Key="true2Visible" />
+        </ResourceDictionary>
+    </Window.Resources>
 
     <Window.DataContext>
         <ViewModel:MainWindowViewModel />
@@ -17,6 +24,7 @@
     <Grid Margin="10">
 
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
@@ -42,40 +50,149 @@
 
         </Grid>
 
+        <StackPanel Grid.Row="1"
+                    Margin="5,5,0,5">
+            <CheckBox Content="expand"
+                      IsChecked="{Binding IsExpandedNavigation, Mode=OneWayToSource}" />
+        </StackPanel>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <GridSplitter HorizontalAlignment="Right" Width="5"/>
+            <GridSplitter HorizontalAlignment="Right"
+                          Width="5" />
 
             <!--NavigationFolders-->
-            <TreeView  Grid.Column="0" ItemsSource="{Binding NavigationFolders}" Margin="5">
+            <TreeView  Grid.Column="0"
+                       ItemsSource="{Binding NavigationFolders}"
+                       Margin="5">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding SubFolders}">
-                        <StackPanel Grid.Row="0" Orientation="Horizontal">
-                            <Image Source="../Icons/folder.png" Width="15" Height="15" Margin="0,0,5,0"/>
-                            <TextBlock  Text="{Binding Name}" Margin="5" />
+                        <StackPanel Grid.Row="0"
+                                    Orientation="Horizontal">
+
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver"
+                                                 Value="True">
+                                            <Setter Property="Background"
+                                                    Value="LightGray" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+
+                            <Image Source="../Icons/folder.png"
+                                   Width="15"
+                                   Height="15"
+                                   Margin="0,0,5,0" />
+                            <TextBlock  Text="{Binding Name}"
+                                        Margin="5" />
+                            <Button Style="{StaticResource IconFontButton}"
+                                    Content="&#xe650;"
+                                    x:Name="eye_btn"
+                                    Command="{Binding Cmd_Item_Click}"
+                                    CommandParameter="{Binding}"
+                                    Visibility="{Binding RelativeSource={RelativeSource AncestorType=StackPanel}, Path=IsMouseOver,Converter={StaticResource true2Visible}}"
+                                    FontFamily="../Font/#iconfont" />
                         </StackPanel>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
+
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="TreeViewItem">
+                        <Setter Property="IsExpanded"
+                                Value="{Binding RelativeSource={RelativeSource AncestorType=Window},Path=DataContext.IsExpandedNavigation}" />
+                    </Style>
+                </TreeView.ItemContainerStyle>
             </TreeView>
 
             <!-- Folder fileInfo-->
 
-            <!--<TreeView  Grid.Column="0" ItemsSource="{Binding Folders}" Margin="5">
-                <TreeView.ItemTemplate>
-                    <HierarchicalDataTemplate ItemsSource="{Binding SubFolders}">
-                        <StackPanel Grid.Row="0" Orientation="Horizontal">
-                            <Image Source="../Icons/folder.png" Width="15" Height="15" Margin="0,0,5,0"/>
-                            <TextBlock  Text="{Binding Name}" Margin="5" />
-                        </StackPanel>
-                    </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
-            </TreeView>-->
+            <Grid Grid.Column="1"
+                  Margin="10,0,10,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
 
+                <!--头部root目录-->
+                <StackPanel Grid.Row="0"
+                            Orientation="Horizontal">
+                    <TextBlock Text="Root:" />
+                    <TextBlock Width="10" />
+                    <TextBlock Text="{Binding InfoRootPath}" />
+                </StackPanel>
+
+                <TreeView   Grid.Row="1"
+                            ItemsSource="{Binding InfoFolders}"
+                            Margin="5">
+                    <TreeView.ItemTemplate>
+
+                        <DataTemplate>
+                            <Grid Margin="0,0,0,5">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Grid.Row="0"
+                                            Orientation="Horizontal">
+                                    <Image Source="../Icons/folder.png"
+                                           Width="15"
+                                           Height="15"
+                                           Margin="0,0,5,0" />
+                                    <TextBlock  Text="{Binding Path}"
+                                                Margin="5" />
+                                </StackPanel>
+
+                                <ItemsControl Margin="15,0,0,0"
+                                              Grid.Row="1"
+                                              ItemsSource="{Binding SubFiles}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+
+                                            <Grid Margin="5">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+
+                                                <Image Width="80" Height="80" Source="{Binding Path, IsAsync=True}" />
+
+                                                <TextBlock Grid.Row="1"
+                                                           MaxWidth="100"
+                                                           HorizontalAlignment="Center"
+                                                           Text="{Binding Name}" />
+
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                            </Grid>
+                        </DataTemplate>
+
+                        <!--<HierarchicalDataTemplate ItemsSource="{Binding SubFiles}">
+
+                            
+                          
+                        </HierarchicalDataTemplate>-->
+                    </TreeView.ItemTemplate>
+
+                </TreeView>
+
+            </Grid>
 
         </Grid>
 

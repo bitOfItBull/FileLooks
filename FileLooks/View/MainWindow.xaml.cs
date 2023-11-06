@@ -24,5 +24,7 @@ namespace FileLooks
         {
             InitializeComponent();
         }
+
+        
     }
 }

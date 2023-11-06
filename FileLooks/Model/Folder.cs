@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace FileLooks.Model
 {
@@ -16,6 +17,7 @@ namespace FileLooks.Model
         public ObservableCollection<Folder> SubFolders { get; set; }
         public ObservableCollection<FileItem> SubFiles { get; set; }
 
-
+        public CommandBase Cmd_Item_Click { get; set; }
+        
     }
 }

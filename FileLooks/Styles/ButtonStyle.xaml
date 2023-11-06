@@ -59,4 +59,122 @@
         </Setter>
     </Style>
 
+    <!--作为Textblock使用-->
+    <Style x:Key="TextButtonStyle"
+           TargetType="Button">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}" />
+        <Setter Property="KeyboardNavigation.TabNavigation"
+                Value="None" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid Margin="{TemplateBinding Margin}"
+                          VerticalAlignment="Center">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="4"
+                                BorderThickness="0">
+                        </Border>
+                        <TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Top"
+                                   Margin="4"
+                                   TextTrimming="CharacterEllipsis"
+                                   FontFamily="{TemplateBinding FontFamily}"
+                                   FontSize="{TemplateBinding FontSize}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   Text="{TemplateBinding Content}" />
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+
+                            <Setter Property="Background"
+                                    TargetName="border"
+                                    Value="LightGray" />
+
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter Property="Opacity"
+                                    Value="0.5"
+                                    TargetName="border" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--IconFont 按钮-->
+    <Style x:Key="IconFontButton"
+           TargetType="{x:Type Button}">
+        <Setter Property="KeyboardNavigation.TabNavigation"
+                Value="None" />
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}" />
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="VerticalAlignment"
+                Value="Center" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Grid>
+                        <Border CornerRadius="10"
+                                x:Name="border">
+                        </Border>
+                        <TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Margin="4"
+                                   Text="{TemplateBinding Content}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   FontSize="{TemplateBinding  FontSize}"
+                                   FontFamily="{TemplateBinding FontFamily}" />
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter Property="Background"
+                                    Value="LightGray"
+                                    TargetName="border" />
+                            <Setter Property="Effect"
+                                    TargetName="border">
+                                <Setter.Value>
+                                    <DropShadowEffect BlurRadius="8"
+                                                      ShadowDepth="0"
+                                                      Direction="0"
+                                                      Color="LightGray"
+                                                      Opacity="1" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter Property="Foreground"
+                                    Value="White" />
+
+                            <Setter Property="Background"
+                                    Value="Gray"
+                                    TargetName="border" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>
