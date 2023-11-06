@@ -28,8 +28,12 @@ namespace FileLooks.ViewModel
         }
 
 
-        public ObservableCollection<Folder> Folders { get; set; }
+        public ObservableCollection<Folder> NavigationFolders { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public ObservableCollection<Folder> InfoFolders { get; set; }
 
 
         public CommandBase Cmd_SelectPath { get; set; }
@@ -40,7 +44,7 @@ namespace FileLooks.ViewModel
 
             Cmd_SelectPath = new CommandBase(Click_SelectPath);
 
-            Folders = new ObservableCollection<Folder>();
+            NavigationFolders = new ObservableCollection<Folder>();
         }
 
         private void Click_SelectPath(object o)
@@ -52,7 +56,7 @@ namespace FileLooks.ViewModel
             if (result == DialogResult.OK)
             {
 
-                this.Folders.Clear();
+                this.NavigationFolders.Clear();
 
                 string selectedPath = folderBrowserDialog.SelectedPath;
                 SelectPath = selectedPath;
@@ -61,7 +65,7 @@ namespace FileLooks.ViewModel
                 folder.Path = selectedPath;
                 folder.Name = Path.GetFileName(selectedPath);
                 folder.SubFolders = new ObservableCollection<Folder> { };
-                Folders.Add(folder);
+                NavigationFolders.Add(folder);
 
                 LoadDirectories(SelectPath, folder);
             }
@@ -71,35 +75,37 @@ namespace FileLooks.ViewModel
         public async void LoadDirectories(string path, Folder parent)
         {
 
-            string[] dirs = Directory.GetDirectories(path);
-            foreach (string dir in dirs)
+            try
             {
 
-                Folder folder = new Folder();
-                folder.Path = dir;
-                folder.Name = Path.GetFileName(dir);
-                folder.SubFolders = new ObservableCollection<Folder> { };
-                folder.SubFiles = new ObservableCollection<FileItem> { };
-                await Task.Run(() =>
+                string[] dirs = Directory.GetDirectories(path);
+                foreach (string dir in dirs)
                 {
-                    LoadDirectories(dir, folder);
+                    Folder folder = new Folder();
+                    folder.Path = dir;
+                    folder.Name = Path.GetFileName(dir);
+                    folder.SubFolders = new ObservableCollection<Folder> { };
+                    folder.SubFiles = new ObservableCollection<FileItem> { };
+                    await Task.Run(() =>
+                    {
+                        LoadDirectories(dir, folder);
 
-                });
+                    });
 
 
-                string[] files = Directory.GetFiles(path);
-                foreach (string file in files)
-                {
-                    FileItem fileItem = new FileItem();
-                    fileItem.Name = Path.GetFileName(file);
-                    fileItem.Path = file;
-                    folder.SubFiles.Add(fileItem);
+                    string[] files = Directory.GetFiles(path);
+                    foreach (string file in files)
+                    {
+                        FileItem fileItem = new FileItem();
+                        fileItem.Name = Path.GetFileName(file);
+                        fileItem.Path = file;
+                        folder.SubFiles.Add(fileItem);
+                    }
+
+                    parent.SubFolders.Add(folder);
                 }
-
-                parent.SubFolders.Add(folder);
             }
-
-
+            catch { }
 
         }
 
