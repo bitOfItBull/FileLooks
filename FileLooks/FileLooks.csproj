@@ -78,6 +78,7 @@
     </Compile>
     <Compile Include="Common\CommandBase.cs" />
     <Compile Include="Common\NotifyBase.cs" />
+    <Compile Include="Model\FileItem.cs" />
     <Compile Include="Model\Folder.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
@@ -111,6 +112,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Icons\folder.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

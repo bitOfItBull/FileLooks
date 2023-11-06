@@ -51,9 +51,11 @@ namespace FileLooks.ViewModel
 
             if (result == DialogResult.OK)
             {
+
+                this.Folders.Clear();
+
                 string selectedPath = folderBrowserDialog.SelectedPath;
                 SelectPath = selectedPath;
-
 
                 Folder folder = new Folder();
                 folder.Path = selectedPath;
@@ -68,7 +70,32 @@ namespace FileLooks.ViewModel
 
         public void LoadDirectories(string path, Folder parent)
         {
+
+            string[] dirs = Directory.GetDirectories(path);
+            foreach (string dir in dirs)
+            {
+                Folder folder = new Folder();
+                folder.Path = dir;
+                folder.Name = Path.GetFileName(dir);
+                folder.SubFolders = new ObservableCollection<Folder> { };
+                folder.SubFiles = new ObservableCollection<FileItem> { };
+                LoadDirectories(dir, folder);
+
+
+                string[] files = Directory.GetFiles(path);
+                foreach (string file in files)
+                {
+                    FileItem fileItem = new FileItem();
+                    fileItem.Name = Path.GetFileName(file);
+                    fileItem.Path = file;
+                    folder.SubFiles.Add(fileItem);
+                }
+
+                parent.SubFolders.Add(folder);
+            }
+
             
+
         }
 
 

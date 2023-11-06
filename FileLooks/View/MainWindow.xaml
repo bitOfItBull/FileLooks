@@ -9,6 +9,7 @@
         Title="MainWindow"
         Height="450"
         Width="800">
+    
     <Window.DataContext>
         <ViewModel:MainWindowViewModel />
     </Window.DataContext>
@@ -40,10 +41,39 @@
 
         </Grid>
 
-        <TreeView Grid.Row="1" ItemsSource="{Binding Folders}">
+        <TreeView  Grid.Row="1" ItemsSource="{Binding Folders}" Margin="5">
             <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                    <TextBlock Text="{Binding Name}" />
+                <HierarchicalDataTemplate ItemsSource="{Binding SubFolders}">
+
+                    <Grid VerticalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Orientation="Horizontal">
+                            <Image Source="../Icons/folder.png" Width="15" Height="15" Margin="0,0,5,0"/>
+                            <TextBlock  Text="{Binding Name}" Margin="5" />
+                        </StackPanel>
+                        
+                        <ItemsControl Grid.Row="1" ItemsSource="{Binding SubFiles}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" Margin="0,0,10,0"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        
+
+
+                    </Grid>
+
+                    <!--<TextBlock Text="{Binding Name}" />-->
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>

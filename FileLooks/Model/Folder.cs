@@ -14,6 +14,8 @@ namespace FileLooks.Model
         public string Name { get; set; }
         public string Path { get; set; }
         public ObservableCollection<Folder> SubFolders { get; set; }
+        public ObservableCollection<FileItem> SubFiles { get; set; }
+
 
     }
 }
