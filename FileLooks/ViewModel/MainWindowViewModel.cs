@@ -148,12 +148,18 @@ namespace FileLooks.ViewModel
             }
         }
 
+        /// <summary>
+        /// 点击小眼睛，查看文件夹内文件
+        /// </summary>
+        /// <param name="o"></param>
         private void Click_Item(object o)
         {
             InfoFolders.Clear();
+
+            System.GC.Collect();
+
             Folder folder = (Folder)o;
             InfoRootPath = folder.Path;
-
             LoadDirFiles(folder);
         }
 
@@ -203,13 +209,15 @@ namespace FileLooks.ViewModel
                 foreach (var f in files)
                 {
                     //只看图片
-                    if (!FileUtil.IsImageFile(f))
-                    {
-                        continue;
-                    }
+                    //if (!FileUtil.IsImageFile(f))
+                    //{
+                    //    continue;
+                    //}
+
                     FileItem fileItem = new FileItem();
                     fileItem.Name = System.IO.Path.GetFileName(f);
                     fileItem.Path = f;
+                    //fileItem.Bitmap = CreateImageSource(f);
                     parent.SubFiles.Add(fileItem);
                 }
 
@@ -253,14 +261,16 @@ namespace FileLooks.ViewModel
             {
                 InfoFolders.Add(folder);
             }
-          
+
 
             foreach (var item in folder.SubFolders)
             {
+
                 LoadDirFiles(item);
             }
-
         }
+
+
 
 
     }

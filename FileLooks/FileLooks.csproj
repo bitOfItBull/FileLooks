@@ -81,6 +81,8 @@
     <Compile Include="Common\EventCommands.cs" />
     <Compile Include="Common\FileUtil.cs" />
     <Compile Include="Common\NotifyBase.cs" />
+    <Compile Include="Control\ImageButton.cs" />
+    <Compile Include="Converter\Path2Bitmap.cs" />
     <Compile Include="Converter\True2Visible.cs" />
     <Compile Include="Model\FileItem.cs" />
     <Compile Include="Model\Folder.cs" />
@@ -120,6 +122,11 @@
   <ItemGroup>
     <Resource Include="Icons\folder.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\file.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\file.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,5 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:Control="clr-namespace:FileLooks.Control">
 
     <!--默认按钮-->
     <Style x:Key="DefaultButtonStyle"
@@ -170,6 +171,79 @@
                                     TargetName="border" />
                         </Trigger>
 
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--作为ImageButton-->
+    <Style x:Key="ImageButtonStyle"
+           TargetType="{x:Type Control:ImageButton}">
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Cursor"
+                Value="Hand" />
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}" />
+        <Setter Property="KeyboardNavigation.TabNavigation"
+                Value="None" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Control:ImageButton">
+                    <Grid Margin="{TemplateBinding Margin}"
+                          VerticalAlignment="Center">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Border x:Name="border"
+                                Grid.RowSpan="2"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="4"
+                                BorderThickness="0">
+                        </Border>
+
+
+                        <Image 
+                               Source="{Binding RelativeSource={RelativeSource AncestorType=Control:ImageButton}, Path=ImagePath, IsAsync=True}"
+                               RenderOptions.BitmapScalingMode="LowQuality" />
+
+                        <TextBlock Grid.Row="1"
+                                   MaxWidth="100"
+                                   HorizontalAlignment="Center"
+                                   Text="{TemplateBinding Property=Content}" />
+
+                        <!--<TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Top"
+                                   Margin="4"
+                                   TextTrimming="CharacterEllipsis"
+                                   FontFamily="{TemplateBinding FontFamily}"
+                                   FontSize="{TemplateBinding FontSize}"
+                                   Foreground="{TemplateBinding Foreground}"
+                                   Text="{TemplateBinding Content}" />-->
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+
+                            <Setter Property="Background"
+                                    TargetName="border"
+                                    Value="LightGray" />
+
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter Property="Opacity"
+                                    Value="0.5"
+                                    TargetName="border" />
+                        </Trigger>
                     </ControlTemplate.Triggers>
 
                 </ControlTemplate>

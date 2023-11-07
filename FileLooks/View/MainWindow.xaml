@@ -6,6 +6,7 @@
         xmlns:ViewModel="clr-namespace:FileLooks.ViewModel"
         xmlns:commom="clr-namespace:CommonLib.Common"
         xmlns:converter="clr-namespace:FileLooks.Converter"
+        xmlns:control="clr-namespace:FileLooks.Control"
         x:Class="FileLooks.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow"
@@ -15,6 +16,8 @@
     <Window.Resources>
         <ResourceDictionary>
             <converter:True2Visible x:Key="true2Visible" />
+            <converter:Path2Bitmap x:Key="path2Bitmap" />
+
         </ResourceDictionary>
     </Window.Resources>
 
@@ -56,7 +59,7 @@
                       IsChecked="{Binding IsExpandedNavigation, Mode=OneWayToSource}" />
         </StackPanel>
 
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="2" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition MinWidth="400" />
                 <ColumnDefinition />
@@ -68,8 +71,8 @@
 
             <!--NavigationFolders-->
             <TreeView  Grid.Column="0"
-                       ItemsSource="{Binding NavigationFolders}"
-                      >
+                      
+                       ItemsSource="{Binding NavigationFolders}">
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding SubFolders}">
                         <StackPanel Grid.Row="0"
@@ -152,8 +155,84 @@
                 </Grid>
 
 
+                <ScrollViewer Grid.Row="2"
+                              VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Auto"
+                              Margin="5">
 
-                <TreeView   Grid.Row="2"
+                    <ItemsControl ItemsSource="{Binding InfoFolders}" Background="LightGray">
+
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel Orientation="Vertical" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+
+                        <ItemsControl.ItemTemplate>
+
+
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <StackPanel Grid.Row="0"
+                                                Orientation="Horizontal">
+                                        <Image Source="../Icons/folder.png"
+                                               Width="15"
+                                               Margin="0,0,5,0" />
+                                        <Button  Content="{Binding Path}"
+                                                 Command="{Binding Cmd_InfoPath_Click}"
+                                                 CommandParameter="{Binding}"
+                                                 Style="{StaticResource TextButtonStyle}"
+                                                 Margin="5" />
+                                    </StackPanel>
+
+                                    <ItemsControl Margin="15,0,0,0"
+                                                  Grid.Row="1"
+                                                  ItemsSource="{Binding SubFiles}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <VirtualizingStackPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+
+                                                <Grid Margin="5">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    
+                                                    <Image Height="80"
+                                                           ToolTip="{Binding Path}"
+                                                           Source="{Binding Path, IsAsync=True,Converter={StaticResource path2Bitmap}}"
+                                                           RenderOptions.BitmapScalingMode="LowQuality" />
+
+                                                    <TextBlock Grid.Row="1"
+                                                               MaxWidth="100"
+                                                               ToolTip="{Binding Name}"
+                                                               HorizontalAlignment="Center"
+                                                               Text="{Binding Name}" />
+
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+
+                                </Grid>
+                            </DataTemplate>
+
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+
+                <!--<TreeView   Grid.Row="2"
                             ItemsSource="{Binding InfoFolders}"
                             Margin="5">
                     <TreeView.ItemTemplate>
@@ -182,7 +261,7 @@
                                               ItemsSource="{Binding SubFiles}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <WrapPanel Orientation="Horizontal" />
+                                            <VirtualizingStackPanel Orientation="Horizontal" />
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
 
@@ -195,8 +274,7 @@
                                                     <RowDefinition Height="Auto" />
                                                 </Grid.RowDefinitions>
 
-                                                <Image Width="80"
-                                                       Source="{Binding Path, IsAsync=True}"
+                                                <Image Source="{Binding Path, IsAsync=True,Converter={StaticResource path2Bitmap}}"
                                                        RenderOptions.BitmapScalingMode="LowQuality" />
 
                                                 <TextBlock Grid.Row="1"
@@ -212,14 +290,9 @@
                             </Grid>
                         </DataTemplate>
 
-                        <!--<HierarchicalDataTemplate ItemsSource="{Binding SubFiles}">
-
-                            
-                          
-                        </HierarchicalDataTemplate>-->
                     </TreeView.ItemTemplate>
 
-                </TreeView>
+                </TreeView>-->
 
             </Grid>
 

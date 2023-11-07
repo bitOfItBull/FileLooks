@@ -1,4 +1,5 @@
 ﻿using CommonLib.Common;
+using FileLooks.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,17 @@ namespace FileLooks.Model
 
         public string Name { get; set; }
 
-        public string Path { get; set; }
+        // public string Path { get; set; }
 
-      
+
+
+        private string path;
+
+        public string Path
+        {
+            get { return path; }
+            set { path = value; }
+        }
+
     }
 }
