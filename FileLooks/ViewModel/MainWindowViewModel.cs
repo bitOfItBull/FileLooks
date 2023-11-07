@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Data;
+using System.Diagnostics;
 
 namespace FileLooks.ViewModel
 {
@@ -54,6 +55,22 @@ namespace FileLooks.ViewModel
 
 
 
+        public string searchText;
+
+
+        public string SearchText
+        {
+            get { return searchText; }
+            set
+            {
+                searchText = value;
+                DoNotifyPropertyChanged();
+            }
+        }
+
+
+
+
         private bool isExpandedNavigation;
 
         public bool IsExpandedNavigation
@@ -77,12 +94,16 @@ namespace FileLooks.ViewModel
 
 
 
+
+
         public IEventAction[] NaviagtionTreeViewActionsCommand { get; set; }
 
 
 
         public CommandBase Cmd_SelectPath { get; set; }
         public CommandBase Cmd_ClickItem { get; set; }
+        public CommandBase Cmd_Search { get; set; }
+        public CommandBase Cmd_InfoPath { get; set; }
 
 
         public MainWindowViewModel()
@@ -90,11 +111,42 @@ namespace FileLooks.ViewModel
 
             Cmd_SelectPath = new CommandBase(Click_SelectPath);
             Cmd_ClickItem = new CommandBase(Click_Item);
+            Cmd_Search = new CommandBase(Click_Search);
+            Cmd_InfoPath = new CommandBase(Click_InfoDirPath);
 
             NavigationFolders = new ObservableCollection<Folder>();
             InfoFolders = new ObservableCollection<Folder>();
         }
 
+        private void Click_InfoDirPath(object o)
+        {
+
+            Folder f = (Folder)o;
+            Process.Start(f.Path);
+        }
+
+
+        /// <summary>
+        /// 搜索查找
+        /// </summary>
+        /// <param name="o"></param>
+        private void Click_Search(object o)
+        {
+
+            if (string.IsNullOrEmpty(SearchText))
+            {
+                return;
+            }
+
+            for (int i = InfoFolders.Count - 1; i >= 0; i--)
+            {
+                if (!InfoFolders[i].Name.Contains(SearchText))
+                {
+                    InfoFolders.RemoveAt(i);
+
+                }
+            }
+        }
 
         private void Click_Item(object o)
         {
@@ -107,7 +159,7 @@ namespace FileLooks.ViewModel
 
 
         /// <summary>
-        /// 选择其实文件目录
+        /// 选择起始文件目录
         /// </summary>
         /// <param name="o"></param>
         private void Click_SelectPath(object o)
@@ -145,6 +197,7 @@ namespace FileLooks.ViewModel
             parent.SubFolders = new ObservableCollection<Folder>();
             try
             {
+
                 //遍历子文件
                 string[] files = Directory.GetFiles(parent.Path);
                 foreach (var f in files)
@@ -182,23 +235,25 @@ namespace FileLooks.ViewModel
         /// 所有文件夹单独只显示文件
         /// </summary>
         /// <param name="folder"></param>
-        private  void LoadDirFiles(Folder folder)
+        private void LoadDirFiles(Folder folder)
         {
+            folder.Cmd_InfoPath_Click = this.Cmd_InfoPath;
 
-            //foreach (var f in folder.SubFiles)
-            //{
+            if (!string.IsNullOrEmpty(SearchText))
+            {
+                string name = folder.Name.ToLower();
 
-            //    BitmapImage image = new BitmapImage();
+                if (name.Contains(SearchText.ToLower()))
+                {
+                    InfoFolders.Add(folder);
 
-            //    image.BeginInit();
-            //    image.UriSource = new System.Uri(f.Path);
-            //    image.DecodePixelWidth = 50;
-            //    image.EndInit();
-            //    image.Freeze();
-            //    f.ImageSource = image;
-            //}
-
-            InfoFolders.Add(folder);
+                }
+            }
+            else
+            {
+                InfoFolders.Add(folder);
+            }
+          
 
             foreach (var item in folder.SubFolders)
             {

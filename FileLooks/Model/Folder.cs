@@ -18,6 +18,7 @@ namespace FileLooks.Model
         public ObservableCollection<FileItem> SubFiles { get; set; }
 
         public CommandBase Cmd_Item_Click { get; set; }
+        public CommandBase Cmd_InfoPath_Click { get; set; }
         
     }
 }

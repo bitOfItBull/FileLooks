@@ -37,6 +37,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -81,7 +82,6 @@
     <Compile Include="Common\FileUtil.cs" />
     <Compile Include="Common\NotifyBase.cs" />
     <Compile Include="Converter\True2Visible.cs" />
-    <Compile Include="Converter\UriToBitmapConverter.cs" />
     <Compile Include="Model\FileItem.cs" />
     <Compile Include="Model\Folder.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />

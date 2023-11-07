@@ -58,17 +58,18 @@
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300" />
+                <ColumnDefinition MinWidth="400" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
             <GridSplitter HorizontalAlignment="Right"
-                          Width="5" />
+                          Margin="-10"
+                          Width="8" />
 
             <!--NavigationFolders-->
             <TreeView  Grid.Column="0"
                        ItemsSource="{Binding NavigationFolders}"
-                       Margin="5">
+                      >
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding SubFolders}">
                         <StackPanel Grid.Row="0"
@@ -117,6 +118,7 @@
                   Margin="10,0,10,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
@@ -128,7 +130,30 @@
                     <TextBlock Text="{Binding InfoRootPath}" />
                 </StackPanel>
 
-                <TreeView   Grid.Row="1"
+
+                <!--搜索-->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Margin="0,0,10,0"
+                             Grid.Column="0"
+                             Text="{Binding SearchText, Mode=TwoWay}"
+                             Style="{StaticResource DefaultTextBoxStyle}"
+                             VerticalContentAlignment="Center"
+                             Cursor="" />
+
+                    <Button Grid.Column="1"
+                            Command="{Binding Cmd_Search}"
+                            Style="{StaticResource DefaultButtonStyle}"
+                            Content="Search" />
+                </Grid>
+
+
+
+                <TreeView   Grid.Row="2"
                             ItemsSource="{Binding InfoFolders}"
                             Margin="5">
                     <TreeView.ItemTemplate>
@@ -144,10 +169,12 @@
                                             Orientation="Horizontal">
                                     <Image Source="../Icons/folder.png"
                                            Width="15"
-                                           Height="15"
                                            Margin="0,0,5,0" />
-                                    <TextBlock  Text="{Binding Path}"
-                                                Margin="5" />
+                                    <Button  Content="{Binding Path}"
+                                             Command="{Binding Cmd_InfoPath_Click}"
+                                             CommandParameter="{Binding}"
+                                             Style="{StaticResource TextButtonStyle}"
+                                             Margin="5" />
                                 </StackPanel>
 
                                 <ItemsControl Margin="15,0,0,0"
@@ -168,7 +195,9 @@
                                                     <RowDefinition Height="Auto" />
                                                 </Grid.RowDefinitions>
 
-                                                <Image Width="80" Height="80" Source="{Binding Path, IsAsync=True}" />
+                                                <Image Width="80"
+                                                       Source="{Binding Path, IsAsync=True}"
+                                                       RenderOptions.BitmapScalingMode="LowQuality" />
 
                                                 <TextBlock Grid.Row="1"
                                                            MaxWidth="100"
